@@ -30,7 +30,7 @@ This setup solves that problem.
 
 ## 📁 Project Structure
 ```
-.
+docker-fastapi-dev/.
 ├── app.py # FastAPI application
 ├── requirements.txt # Python dependencies
 ├── Dockerfile.dev # Development Dockerfile

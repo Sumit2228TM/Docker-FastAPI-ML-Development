@@ -83,6 +83,7 @@ App code is not copied into the image
 Code is mounted using Docker volumes
 
 ▶️ How to Run (Development Mode)
+
 1️⃣ Build the image
 ```
 docker build -f Dockerfile.dev -t fastapi-dev .
@@ -116,16 +117,12 @@ Why production Dockerfiles should be different
 This setup is for development only
 
 Production deployments require:
-
 No --reload
-
 Code copied into image
-
 Multiple workers
-
 Proper security configs
+(It is handled in a seperate project)
 
-(Handled in a separate project.)
 
 ## 🏁 Conclusion
 Docker is not just for deployment.

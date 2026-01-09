@@ -94,6 +94,15 @@ Health check: http://localhost:8000/health
 
 Any change to app.py will auto-reload the server 🚀
 
+## See the logs generated 
+```
+docker logs -f ml-api-dev
+
+```
+## Note 
+
+--If you’re experimenting frequently, remember to periodically clean up unused Docker containers and images to keep your local environment tidy.
+
 ## 🧪 What This Project Demonstrates
 
 Docker images vs containers

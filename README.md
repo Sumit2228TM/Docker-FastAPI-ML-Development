@@ -2,7 +2,6 @@
 
 This repository demonstrates **Docker-based development workflow** using **FastAPI**, focusing on **live reload**, **volume mounting**, and **developer productivity**.
 
-🚫 This repo is intentionally **NOT about deployment or production**.  
 ✅ It focuses purely on **local development with Docker**.
 
 ---

@@ -96,7 +96,7 @@ Health check: http://localhost:8000/health
 
 Any change to app.py will auto-reload the server 🚀
 
-##🧪 What This Project Demonstrates
+## 🧪 What This Project Demonstrates
 Docker images vs containers
 Volume mounting for fast ML development
 Live reload inside Docker

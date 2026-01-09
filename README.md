@@ -95,21 +95,35 @@ Health check: http://localhost:8000/health
 Any change to app.py will auto-reload the server 🚀
 
 ## 🧪 What This Project Demonstrates
+
 Docker images vs containers
+
 Volume mounting for fast ML development
+
 Live reload inside Docker
+
 FastAPI-based ML inference
+
 Practical Docker usage for ML engineers
+
 
 ## ⚠️ Notes
 This setup is for development only
+
 Production deployment requires:
+
 No --reload
+
 Code copied into image
+
 Multiple workers
+
 Security hardening
+
 (Handled in a separate project.)
+
 
 🏁 Final Thoughts
 Docker is not just a deployment tool.
+
 Used correctly, it becomes a powerful environment for ML API development.

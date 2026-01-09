@@ -1,160 +1,117 @@
-# 🐳 Docker Development with FastAPI (Live Reload)
+# 🐳 Dockerized ML API – FastAPI Development Setup
 
-This repository demonstrates **Docker-based development workflow** using **FastAPI**, focusing on **live reload**, **volume mounting**, and **developer productivity**.
+This repository demonstrates a **Docker-based development workflow** for a **Machine Learning API** built using **FastAPI** and **scikit-learn**.
 
-✅ It focuses purely on **local development with Docker**.
-
----
-
-## 🚀 What This Project Demonstrates
-
-- ✅ Dockerizing a FastAPI application for development
-- ✅ Live code reload using Docker (`--reload`)
-- ✅ Volume mounting instead of rebuilding images
-- ✅ Clear separation between **development** and **production**
-- ✅ Understanding of Docker images vs containers
+The focus of this project is **local development with Docker**, not production deployment.
 
 ---
 
-## 🧠 Why This Matters
+## 🚀 What This Project Does
 
-In real-world projects:
-- Rebuilding Docker images on every code change is **slow**
-- Developers need **instant feedback**
-- Docker should improve productivity, not slow it down
+- Serves a simple **Linear Regression model** via a FastAPI backend
+- Uses **Docker for development**, not deployment
+- Enables **live reload** without rebuilding images
+- Demonstrates clean separation between **ML logic** and **Docker workflow**
 
-This setup solves that problem.
+---
+
+## 🧠 ML Overview (Simple by Design)
+
+The API loads a pre-trained **Linear Regression** model at startup:
+
+- Input: single numeric value
+- Output: predicted value (`y = 2x`)
+- Purpose: demonstrate ML inference inside a Dockerized API
+
+This keeps the ML logic simple so the focus remains on **Docker development practices**.
 
 ---
 
 ## 📁 Project Structure
 ```
-docker-fastapi-dev/.
-├── app.py # FastAPI application
+docker-fastapi-ml-dev/
+├── app.py # FastAPI app with ML model
 ├── requirements.txt # Python dependencies
-├── Dockerfile.dev # Development Dockerfile
-├── .dockerignore # Ignore unnecessary files
+├── Dockerfile.dev # Dockerfile for development
+├── .dockerignore # Excludes unnecessary files
 └── README.md
 ```
 
 
 ---
 
-## 🧩 Application Overview
+## 🧩 API Endpoints
 
-### `app.py`
+| Method | Endpoint | Description |
+|------|---------|-------------|
+| GET | `/` | API status |
+| GET | `/health` | Health check |
+| POST | `/predict` | ML prediction |
+| GET | `/info` | Model metadata |
 
-```python
-from fastapi import FastAPI
-from pydantic import BaseModel
-import numpy as np
-from sklearn.linear_model import LinearRegression
+---
 
-app = FastAPI()
+## 🐳 Docker Development Setup
 
-# Simple trained model
-X = np.array([[1], [2], [3], [4], [5]])
-y = np.array([2, 4, 6, 8, 10])
-model = LinearRegression()
-model.fit(X, y)
+### `Dockerfile.dev`
 
-class PredictionInput(BaseModel):
-    value: float
-
-@app.get("/")
-def read_root():
-    return {"message": "ML API v1.0", "status": "running"}
-
-@app.get("/health")
-def health():
-    return {"status": "healthy"}
-
-@app.post("/predict")
-def predict(input: PredictionInput):
-    prediction = model.predict([[input.value]])
-    return {
-        "input": input.value,
-        "prediction": float(prediction[0])
-    }
-
-@app.get("/info")
-def info():
-    return {
-        "model": "Linear Regression",
-        "author": "Sumit Gatade",
-        "version": "2.0"
-    }
-```
-🐳 Dockerfile (Development)
-Dockerfile.dev
-```
-# Base image
+```dockerfile
 FROM python:3.10-slim
 
-# Set working directory
 WORKDIR /app
 
-# Copy and install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# We DON'T copy app.py here - will use volume instead!
-
-# Expose port
 EXPOSE 8000
 
-# Use --reload flag for auto-restart on code changes
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 ```
 Why this works well for development:
---reload → auto-restarts server on code changes
+--reload enables live code updates
 
-App code is not copied into the image
+Application code is not copied into the image
 
 Code is mounted using Docker volumes
 
-▶️ How to Run (Development Mode)
+No rebuild required on code changes
 
-1️⃣ Build the image
+## ▶️ How to Run the Project
+
+1️⃣ Build the Docker image
 ```
-docker build -f Dockerfile.dev -t fastapi-dev .
+bash
+docker build -f Dockerfile.dev -t ml-api-dev .
 ```
 2️⃣ Run with volume mounting
 ```
-docker run -d --name fastapi-dev -p 8000:8000 -v $(pwd):/app fastapi-dev
+bash
+docker run -d --name ml-api-dev -p 8000:8000 -v $(pwd):/app ml-api-dev
 ```
-Any change to app.py will instantly reload the server 🚀
-No rebuild required.
 
-## 🌐 Access the App
-API Root: http://localhost:8000/
-
+## 🌐 Access the API
 Swagger UI: http://localhost:8000/docs
 
-Health Check: http://localhost:8000/health
+Health check: http://localhost:8000/health
 
-## 🧪 What I Learned from This Project
-Difference between Docker images and containers
+Any change to app.py will auto-reload the server 🚀
 
-Why volume mounting is ideal for development
-
-How FastAPI + Uvicorn reload works inside Docker
-
-How to design Dockerfiles based on use-case
-
-Why production Dockerfiles should be different
+##🧪 What This Project Demonstrates
+Docker images vs containers
+Volume mounting for fast ML development
+Live reload inside Docker
+FastAPI-based ML inference
+Practical Docker usage for ML engineers
 
 ## ⚠️ Notes
 This setup is for development only
-
-Production deployments require:
+Production deployment requires:
 No --reload
 Code copied into image
 Multiple workers
-Proper security configs
-(It is handled in a seperate project)
+Security hardening
+(Handled in a separate project.)
 
-
-## 🏁 Conclusion
-Docker is not just for deployment.
-When used correctly, it becomes a powerful development tool.
+🏁 Final Thoughts
+Docker is not just a deployment tool.
+Used correctly, it becomes a powerful environment for ML API development.

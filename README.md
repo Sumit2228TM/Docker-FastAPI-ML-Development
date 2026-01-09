@@ -132,7 +132,8 @@ Security hardening
 (Handled in a separate project.)
 
 
-🏁 Final Thoughts
+## 🏁 Final Thoughts
+
 Docker is not just a deployment tool.
 
 Used correctly, it becomes a powerful environment for ML API development.

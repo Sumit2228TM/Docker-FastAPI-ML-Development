@@ -80,12 +80,10 @@ No rebuild required on code changes
 
 1️⃣ Build the Docker image
 ```
-bash
 docker build -f Dockerfile.dev -t ml-api-dev .
 ```
 2️⃣ Run with volume mounting
 ```
-bash
 docker run -d --name ml-api-dev -p 8000:8000 -v $(pwd):/app ml-api-dev
 ```
 

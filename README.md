@@ -43,36 +43,67 @@ docker-fastapi-dev/.
 ## 🧩 Application Overview
 
 ### `app.py`
-A minimal FastAPI app with:
-- Root endpoint
-- Health check
-- Example API response
 
 ```python
 from fastapi import FastAPI
+from pydantic import BaseModel
+import numpy as np
+from sklearn.linear_model import LinearRegression
 
 app = FastAPI()
 
+# Simple trained model
+X = np.array([[1], [2], [3], [4], [5]])
+y = np.array([2, 4, 6, 8, 10])
+model = LinearRegression()
+model.fit(X, y)
+
+class PredictionInput(BaseModel):
+    value: float
+
 @app.get("/")
-def root():
-    return {"message": "Docker Dev API is running 🚀"}
+def read_root():
+    return {"message": "ML API v1.0", "status": "running"}
 
 @app.get("/health")
 def health():
     return {"status": "healthy"}
+
+@app.post("/predict")
+def predict(input: PredictionInput):
+    prediction = model.predict([[input.value]])
+    return {
+        "input": input.value,
+        "prediction": float(prediction[0])
+    }
+
+@app.get("/info")
+def info():
+    return {
+        "model": "Linear Regression",
+        "author": "Sumit Gatade",
+        "version": "2.0"
+    }
 ```
 🐳 Dockerfile (Development)
 Dockerfile.dev
 ```
+# Base image
 FROM python:3.10-slim
 
+# Set working directory
 WORKDIR /app
 
+# Copy and install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# We DON'T copy app.py here - will use volume instead!
+
+# Expose port
 EXPOSE 8000
 
+# Use --reload flag for auto-restart on code changes
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 ```
 Why this works well for development:
